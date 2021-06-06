@@ -29,3 +29,7 @@ int main ()
 			{ 
 				GPIO_PORTF_DATA_R =RED;
 			}	
+			else if ((GPIO_PORTF_DATA_R&0x11) == 0x01) //sw1 pin4
+			{
+				GPIO_PORTF_DATA_R =BLUE;
+			}
