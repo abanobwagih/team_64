@@ -4,14 +4,12 @@
 #include <TM4C123.h>
 #include"C:/Keil/EE319Kware/inc/tm4c123gh6pm.h"
 #define RED 0x02
-#define BLUE 0x04
-#define GREEN 0x08
 void SystemInit(){}
 	void init (void)
 		{
 		uint32_t delay;
 		SYSCTL_RCGCGPIO_R |=0x20;
-		delay =1; // dummy var 
+		delay =1; 
 		GPIO_PORTF_LOCK_R=0x4C4F434B;
 		GPIO_PORTF_CR_R=0x1F;
 		GPIO_PORTF_AFSEL_R =0;
