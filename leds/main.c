@@ -20,3 +20,12 @@ void SystemInit(){}
 		GPIO_PORTF_PUR_R=0x11;
 	
 	}
+int main ()
+	{
+  	init ();
+		while(1)
+		{
+			if( (GPIO_PORTF_DATA_R&0x11) == 0x10) //sw2 pin0
+			{ 
+				GPIO_PORTF_DATA_R =RED;
+			}	
