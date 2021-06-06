@@ -33,3 +33,13 @@ int main ()
 			{
 				GPIO_PORTF_DATA_R =BLUE;
 			}
+					else if ((GPIO_PORTF_DATA_R&0x11) == 0x00 ) //2 SW
+			{
+				GPIO_PORTF_DATA_R =GREEN;
+			}
+				else
+				{
+					GPIO_PORTF_DATA_R =0;
+				}
+		}
+	}
