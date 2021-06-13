@@ -120,8 +120,24 @@ void LCD_separating_double(double deci)
 }
 
 
+// To convert from degrees to radian
+float deg_to_rad(float deg) {
+    return (deg * PI / 180);
+}
 
-
+// Measuring the distance by longitude and latitude
+float Total_Distance(float long1, float long2, float lat1, float lat2)
+{
+    float dlong = deg_to_rad(long2 - long1);
+    float dlat = deg_to_rad(lat2 - lat1);
+    float phi1 = deg_to_rad(lat1);
+    float phi2 = deg_to_rad(lat2);
+    // Haversine formula
+    float a = pow(sin((0.5 * dlat)), 2) + cos(phi1) * cos(phi2) * pow(sin((0.5 * dlong)), 2);
+    float d = 2 * R * asin(sqrt(a));
+    Dis = Dis + d;
+    return Dis;
+}
 
 
 void init()
@@ -189,5 +205,65 @@ void init()
     GPIO_PORTF_PCTL_R = 0;       // working I/O ports OR UART
     GPIO_PORTF_PUR_R = 0x11;      // for switches
 }
+
+int main()
+{
+    //SCB->CPACR |= ((3UL << 10*2) | (3UL << 11*2) );
+
+    init();
+
+
+
+
+
+
+
+
+    while (1)
+    {
+
+        if (Distance < 100) {
+
+            readGPSModule();
+
+
+
+            //LCD_command(0xC0);
+           // LCD_string(latitudeIs);
+            if (flag == 0) flag = 1;
+            else
+
+                Distance += Total_Distance(pastlon, lon, pastlat, lat);
+            pastlat = lat;
+            pastlon = lon;
+            sprintf(dist, "%f", Distance);
+            LCD_command(0x01);
+            LCD_string(dist);
+
+            delay_ms(1000);
+        }
+
+
+        if (Distance >= 100)
+        {
+            GPIO_PORTF_DATA_R = 0x02;
+        }
+        else
+        {
+            GPIO_PORTF_DATA_R = 0;
+        }
+
+    }
+
+}
+void readGPSModule() {
+    int check = 0;
+    char GPS_values[100], * token, parseValue[12][20];
+    double latitude = 0.0, longitude = 0.0, seconds = 0.0, minutes = 0.0, Lat = 0.0, Lon = 0.0;
+    char m0, m1, m2, m3, m4, m5, m6, m7;
+    const char comma[2] = ",";
+
+
+
 
 
