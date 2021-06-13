@@ -228,6 +228,7 @@ int main()
 
 
 
+            
             //LCD_command(0xC0);
            // LCD_string(latitudeIs);
             if (flag == 0) flag = 1;
@@ -262,6 +263,9 @@ void readGPSModule() {
     double latitude = 0.0, longitude = 0.0, seconds = 0.0, minutes = 0.0, Lat = 0.0, Lon = 0.0;
     char m0, m1, m2, m3, m4, m5, m6, m7;
     const char comma[2] = ",";
+    
+    
+    
     int index = 0, degrees;
 start:
     //is the incoming data is $GPRMC?
@@ -317,3 +321,43 @@ start:
                                     minutes = latitude - (double)(degrees * 100);
                                     seconds = minutes / 60.00;
                                     Lat = degrees + seconds;
+
+                                    sprintf(latitudeIs, "%f", Lat);
+                                    //print("%s\n",latitudeIs);
+
+                                    //longitude calculation
+                                    degrees = longitude / 100;
+                                    minutes = longitude - (double)(degrees * 100);
+                                    seconds = minutes / 60.00;
+                                    Lon = degrees + seconds;
+
+                                    sprintf(longitudeIs, "%f", Lon);
+
+                                    lat = Lat;
+                                    lon = Lon;
+
+
+                                    printf("lat = %s\n", latitudeIs);
+                                    printf("lon = %s\n\n\n", longitudeIs);
+                                    // LCD_command(0x01);
+                                    // LCD_string(longitudeIs);
+
+
+
+                                }
+
+
+                                else {
+
+                                    printf("\Error\n");
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (check == 0) { goto start; }
+}
