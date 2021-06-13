@@ -119,3 +119,40 @@ void LCD_separating_double(double deci)
     LCD_integers(decimal_part);
 }
 
+
+
+
+
+
+void init()
+{
+    volatile uint32_t delay;
+
+    SYSCTL_RCGCGPIO_R |= 0x03;    //clock register for ports A B
+    delay = 1;
+
+    GPIO_PORTA_LOCK_R = 0x4C4F434B;   //lock for ports A B
+    GPIO_PORTA_CR_R = 0xE0;
+    //GPIO_PORTB_LOCK_R=0x4C4F434B;
+    GPIO_PORTB_CR_R = 0xFF;
+
+
+    GPIO_PORTA_AFSEL_R = 0;       //initializing portA  5 6 7
+    GPIO_PORTA_PCTL_R = 0;
+    GPIO_PORTA_AMSEL_R = 0;
+    GPIO_PORTA_DIR_R |= 0xE0;
+    GPIO_PORTA_DEN_R |= 0xE0;
+    GPIO_PORTA_PUR_R = 0;
+    GPIO_PORTB_AFSEL_R = 0;       //initializing portB pins 0-8 for LCD
+    GPIO_PORTB_PCTL_R = 0;
+    GPIO_PORTB_AMSEL_R = 0;
+    GPIO_PORTB_DIR_R = 0xFF;
+    GPIO_PORTB_DEN_R = 0xFF;
+    GPIO_PORTB_PUR_R = 0;
+
+
+
+
+    SYSCTL_RCGCUART_R |= 0x0020;    // ACTIVATE UART5
+    SYSCTL_RCGCGPIO_R |= 0x0010;    // enable the clock of port E4,5
+
