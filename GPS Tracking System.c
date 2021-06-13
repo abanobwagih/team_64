@@ -155,4 +155,39 @@ void init()
 
     SYSCTL_RCGCUART_R |= 0x0020;    // ACTIVATE UART5
     SYSCTL_RCGCGPIO_R |= 0x0010;    // enable the clock of port E4,5
+    UART5_CTL_R &= ~(0x01);
+    UART5_IBRD_R = 104;
+    UART5_FBRD_R = 11;
+    UART5_LCRH_R |= 0x0070;
+    UART5_CTL_R |= 0X0301;
+
+    GPIO_PORTE_DEN_R |= 0x0030;      // D    E4,5
+    GPIO_PORTE_AMSEL_R &= ~0x0030;       //  D
+    GPIO_PORTE_AFSEL_R |= 0x0030;
+    GPIO_PORTE_PCTL_R = (GPIO_PORTE_PCTL_R & 0xFF00FFFF) + 0x00110000;           // working I/O ports OR UART
+
+
+    delay_ms(20);
+    LCD_command(0x38);
+    delay_us(50);
+    LCD_command(0x0F);
+    delay_ms(50);
+    LCD_command(0x06);
+    delay_ms(50);
+    LCD_command(0x01);
+    delay_ms(25);
+
+
+    SYSCTL_RCGCGPIO_R |= 0x20;    // enable the clock of port
+    delay = 1;
+    GPIO_PORTF_LOCK_R = 0x4C4F434B;
+    GPIO_PORTF_CR_R = 0x1F;        // enable pins
+    GPIO_PORTF_DIR_R = 0x0E;      // pin I/O  0/1
+    GPIO_PORTF_DEN_R = 0x1F;      // D
+    GPIO_PORTF_AMSEL_R = 0;      // A
+    GPIO_PORTF_AFSEL_R = 0;
+    GPIO_PORTF_PCTL_R = 0;       // working I/O ports OR UART
+    GPIO_PORTF_PUR_R = 0x11;      // for switches
+}
+
 
